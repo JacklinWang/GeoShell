@@ -1,0 +1,9 @@
+<RCC>
+  <qresource>
+    <file>pics/app-worksheet.png</file>
+    <file>pics/close-c.png</file>
+    <file>pics/folder-open.png</file>
+    <file>pics/open.png</file>
+    <file>pics/save.png</file>
+  </qresource>
+</RCC>
