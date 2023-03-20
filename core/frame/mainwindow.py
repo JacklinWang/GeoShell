@@ -70,7 +70,7 @@ class Ui_MainWindow(object):
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
         self.label_2 = QtWidgets.QLabel(self.frame)
-        self.label_2.setGeometry(QtCore.QRect(20, 10, 141, 31))
+        self.label_2.setGeometry(QtCore.QRect(38, 10, 159, 31))
         font = QtGui.QFont()
         font.setPointSize(12)
         font.setBold(True)

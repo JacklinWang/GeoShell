@@ -36,11 +36,12 @@ class readfile(object):
     def read_shp(self, filename):
         file_path = filename
         gdf = gpd.read_file(file_path)
-        #fig = gdf.plot()
+        #fig, ax = plt.subplots()
         # 获取绘图的Axes对象
-        ax = gdf.plot(edgecolor='white', facecolor='#C8F7C5')
+        ax = gdf.plot(figsize=(3.51, 3.71), edgecolor='#D6D8D7', facecolor='#D5CDC2')
         # 隐藏坐标轴
         ax.set_axis_off()
+        #ax.set_facecolor('black')
         # # 获取Figure对象
         # fig = ax.get_figure()
         print(gdf.head())

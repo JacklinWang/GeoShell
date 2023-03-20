@@ -17,6 +17,8 @@ from shapely.geometry import Point
 class Ui_Dialog(object):
 
     def __init__(self):
+        self.label = None
+        self.vbox = None
         self.canvas = None
         self.fig = None
         self.pixmap = None
@@ -34,22 +36,40 @@ class Ui_Dialog(object):
         self.ax = geograph
         self.fig = self.ax.get_figure()
         self.canvas = FigureCanvas(self.fig)
-        self.canvas.setStyleSheet("background-color: white;")
-        # 将鼠标点击事件处理函数注册到地图对象上
-        #self.canvas.mpl_connect('button_press_event', self.onclick)
-        print('run')
-        # 将 FigureCanvas 转换为 QPixmap
-        self.pixmap = QPixmap(self.canvas.grab())
-
-        # 创建一个 QLabel 对象，并将 QPixmap 对象用作其背景
+        self.fig.patch.set_facecolor('#ECECEC')
+        self.canvas.resize(351, 371)
+        #self.canvas.setStyleSheet("background-color: black;")
+        print(self.canvas.size())
         self.label = QLabel(Dialog)
-        self.label.setStyleSheet("background-color: white;")
-        self.label.setGeometry(QtCore.QRect(140, 20, 351, 371))
-        self.label.setPixmap(self.pixmap)
-        self.label.setScaledContents(True)
+        #self.label.setStyleSheet("background-color: black;")
+        self.label.setGeometry(QtCore.QRect(260, 20, 351, 371))
+        #print(self.label.size())
+        # self.label.setScaledContents(True)
+        # # 创建一个 QVBoxLayout 实例，并将 QLabel 添加到该布局中
+        # self.vbox = QVBoxLayout()
+        # self.vbox.addWidget(self.label)
+        # self.setLayout(self.vbox)
 
-        # # 创建一个 FigureCanvas 对象和 Axes 对象
-        # canvas = FigureCanvas(self.fig)
+        # 将地图绘制到 QLabel 上
+        self.canvas = FigureCanvas(self.fig)
+        self.canvas.setParent(self.label)
+        #self.label.setScaledContents(True)
+        # 将鼠标点击事件处理函数注册到地图对象上
+        self.canvas.mpl_connect('button_press_event', self.onclick)
+        # # 将鼠标点击事件处理函数注册到地图对象上
+        # #self.canvas.mpl_connect('button_press_event', self.onclick)
+        # print('run')
+        # # 将 FigureCanvas 转换为 QPixmap
+        # self.pixmap = QPixmap(self.canvas.grab())
+        #
+        # # 创建一个 QLabel 对象，并将 QPixmap 对象用作其背景
+        # self.label = QLabel(Dialog)
+        # self.label.setStyleSheet("background-color: white;")
+        # self.label.setGeometry(QtCore.QRect(140, 20, 351, 371))
+
+        # self.canvas.setParent(self.label)
+        # # # 创建一个 FigureCanvas 对象和 Axes 对象
+        # # canvas = FigureCanvas(self.fig)
         #
         # # 将 FigureCanvas 对象绑定到 PyQt 窗口中
         # self.setCentralWidget(canvas)
@@ -68,79 +88,28 @@ class Ui_Dialog(object):
         #self.label.setText(_translate("Dialog", ""))
 
     # 定义鼠标点击事件处理函数
-    def onclick(self, event, label, ax):
-        # # 获取鼠标点击位置的像素坐标
-        # x, y = event.x(), event.y()
-        # # 获取鼠标点击的QWidget上的坐标
-        # widget_pos = event.pos()
-        # # 将QWidget上的坐标转换为QPixmap上的坐标
-        # pixmap_pos = self.canvas.mapFromGlobal(widget_pos)
-        # print(pixmap_pos)
-        # print("Clicked at x=%s, y=%s" % (x, y))
-        # # 将QPixmap上的坐标转换为figure对象上的坐标
-        # figure_pos = self.fig.bbox.bounds
-        # trans_fig = self.fig.transFigure.inverted()
-        # trans_axes = self.ax.transAxes.inverted()
-        # x_norm, y_norm = trans_fig.transform((x,y))
-        # xdata, ydata = trans_axes.transform((x_norm, y_norm))
-        #
-        # print("figure_pos: ", figure_pos)
-        # print(f'axes: {xdata:.2f},{ydata:.2f}')
-        #
-        # # 如果点击的位置在地图外，则返回
-        # if x is None or y is None:
-        #     print('null')
-        #     return
-        #
-        # # 获取被点击的区域
-        # clicked = self.data[self.data.geometry.contains(Point(x, y))]
-        #
-        # print(clicked)
-        # # 如果没有点击到任何区域，则返回
-        # if clicked.empty:
-        #     print('nnnn')
-        #     return
-        #
-        # # 清除之前的高亮区域
-        # if self.last_clicked is not None:
-        #     self.last_clicked.plot(edgecolor='white', facecolor='#C8F7C5')
-        #
-        # # 高亮被点击的区域
-        # clicked.plot(edgecolor='black', facecolor='#004B00')
-        #
-        # # 保存当前点击的区域
-        # self.last_clicked = clicked
+    def onclick(self, event):
 
-        # pos = event.pos()
-        # label_pos = self.label.mapFrom(self.label, pos)
-        # print(label_pos.x())
-        # # 获取QPixmap图像的大小
-        # pixmap = self.label.pixmap()
-        # pixmap_size = pixmap.size()
-        # new_x = (label_pos.x() - pixmap_size.width())/2
-        # new_y = (label_pos.y() - pixmap_size.height())/2
-        #
-        # pixmap_pos = QPoint(new_x, new_y)
-        #
-        # # 将QPixmap图像上的坐标转换为实际坐标值
-        # x = pixmap_pos.x() / pixmap_size.width() * 100
-        # y = pixmap_pos.y() / pixmap_size.height() * 100
-        #
-        # print(f"鼠标点击位置在QPixmap中的位置坐标：({pixmap_pos.x()}, {pixmap_pos.y()})")
-        # print(f"转换后的实际坐标值：({x:.2f}, {y:.2f})")
-        #
-        # trans_fig = self.fig.transFigure.inverted()
-        # trans_axes = self.ax.transAxes.inverted()
-        # x_norm, y_norm = trans_fig.transform((x, y))
-        # xdata, ydata = trans_axes.transform((x_norm, y_norm))
-        #
-        # print(f'axes: {xdata:.2f},{ydata:.2f}')
-        # 获取 QLabel 坐标
-        pos = label.mapTo(label.parent(), event.pos())
+        # 获取鼠标点击位置的坐标
+        x, y = event.xdata, event.ydata
+        print("Clicked at x_canvas=%s, y_canvas=%s" % (x, y))
+        # 如果点击的位置在地图外，则返回
+        if x is None or y is None:
+            return
+        #clicked = None
+        # 获取被点击的区域
+        clicked = self.data[self.data.geometry.contains(Point(x, y))]
+        print(clicked)
+        # 如果没有点击到任何区域，则返回
+        if clicked.empty:
+            return
 
-        # 将 QLabel 坐标转换为 Axes 坐标
-        trans = ax.transData.inverted()
-        x, y = trans.transform((pos.x(), pos.y()))
+        # 清除之前的高亮区域
+        if self.last_clicked is not None:
+            self.last_clicked.plot(ax=self.ax, edgecolor='#D6D8D7', facecolor='#D5CDC2')
 
-        # 输出 Axes 坐标
-        print('Axes coordinates: ({:.2f}, {:.2f})'.format(x, y))
+        # 高亮被点击的区域
+        clicked.plot(ax=self.ax, edgecolor='grey', facecolor='#BCA080')
+
+        # 保存当前点击的区域
+        self.last_clicked = clicked
